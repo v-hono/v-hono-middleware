@@ -1,7 +1,6 @@
 module hono_middleware
 
-import hono
-
+import meiseayoung.hono
 import time
 import crypto.sha256
 import encoding.base64

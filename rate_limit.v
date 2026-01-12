@@ -1,7 +1,6 @@
 module hono_middleware
 
-import hono
-
+import meiseayoung.hono
 import net.http
 import time
 import sync

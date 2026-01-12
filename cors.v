@@ -1,7 +1,6 @@
 module hono_middleware
 
-import hono
-
+import meiseayoung.hono
 import net.http
 
 // CorsOrigin 类型 - 支持多种来源配置方式

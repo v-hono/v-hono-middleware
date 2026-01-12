@@ -2,7 +2,7 @@
 // 本示例展示了 v-hono 框架所有内置中间件的基本用法
 module main
 
-import hono
+import meiseayoung.hono
 import net.http
 import time
 

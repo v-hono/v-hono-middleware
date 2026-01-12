@@ -1,4 +1,4 @@
-# hono.middleware
+# meiseayoung.hono_middleware
 
 Middleware collection for v-hono-core framework.
 
@@ -14,8 +14,8 @@ Middleware collection for v-hono-core framework.
 ## Installation
 
 ```bash
-v install hono
-v install hono.middleware
+v install meiseayoung.hono
+v install meiseayoung.hono_middleware
 ```
 
 ## Usage
@@ -23,13 +23,13 @@ v install hono.middleware
 ### CORS Middleware
 
 ```v
-import hono
-import hono.middleware
+import meiseayoung.hono
+import meiseayoung.hono_middleware
 
 fn main() {
     mut app := hono.Hono.new()
 
-    app.use(middleware.cors(middleware.CorsOptions{
+    app.use(hono_middleware.cors(hono_middleware.CorsOptions{
         origin: 'https://example.com'
         credentials: true
         allow_methods: ['GET', 'POST', 'PUT', 'DELETE']
@@ -42,14 +42,14 @@ fn main() {
 ### Rate Limiting
 
 ```v
-import hono
-import hono.middleware
+import meiseayoung.hono
+import meiseayoung.hono_middleware
 
 fn main() {
     mut app := hono.Hono.new()
-    store := middleware.MemoryStore.new()
+    store := hono_middleware.MemoryStore.new()
 
-    app.use(middleware.rate_limit(middleware.RateLimitOptions{
+    app.use(hono_middleware.rate_limit(hono_middleware.RateLimitOptions{
         store: store
         window_ms: 60000   // 1 minute
         limit: 100         // Max 100 requests
@@ -62,16 +62,16 @@ fn main() {
 ### Request Validation
 
 ```v
-import hono
-import hono.middleware
+import meiseayoung.hono
+import meiseayoung.hono_middleware
 
 fn main() {
     mut app := hono.Hono.new()
 
     app.post('/users',
-        middleware.validate_json(middleware.v_object({
-            'name': middleware.v_string().required().min(2)
-            'email': middleware.v_string().required()
+        hono_middleware.validate_json(hono_middleware.v_object({
+            'name': hono_middleware.v_string().required().min(2)
+            'email': hono_middleware.v_string().required()
         })),
         fn (mut c hono.Context) http.Response {
             return c.json('{"message":"User created"}')
@@ -84,7 +84,7 @@ fn main() {
 
 ## Dependencies
 
-- `hono` - Core framework
+- `meiseayoung.hono` - Core framework
 
 ## License
 

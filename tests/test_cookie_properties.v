@@ -1,4 +1,4 @@
-import hono
+import meiseayoung.hono
 import hono_middleware
 import net.http
 import rand
@@ -178,7 +178,7 @@ fn test_property_4_signed_cookie_roundtrip() bool {
 		
 		// 设置签名 Cookie
 		mut ctx := create_empty_context()
-		hono.set_signed_cookie(mut ctx, name, value, secret) or {
+		hono_middleware.set_signed_cookie(mut ctx, name, value, secret) or {
 			println('  Iteration ${i}: Failed to set signed cookie: ${err}')
 			return false
 		}
@@ -205,7 +205,7 @@ fn test_property_4_signed_cookie_roundtrip() bool {
 		verify_ctx := create_context_with_cookies('${name}=${cookie_value}')
 		
 		// 获取并验证签名 Cookie
-		retrieved := hono.get_signed_cookie(verify_ctx, name, secret) or {
+		retrieved := hono_middleware.get_signed_cookie(verify_ctx, name, secret) or {
 			println('  Iteration ${i}: Failed to get signed cookie: ${err}')
 			return false
 		}
@@ -237,7 +237,7 @@ fn test_property_5_signed_cookie_tamper_detection() bool {
 		
 		// 设置签名 Cookie
 		mut ctx := create_empty_context()
-		hono.set_signed_cookie(mut ctx, name, value, secret) or {
+		hono_middleware.set_signed_cookie(mut ctx, name, value, secret) or {
 			println('  Iteration ${i}: Failed to set signed cookie: ${err}')
 			return false
 		}
@@ -286,7 +286,7 @@ fn test_property_5_signed_cookie_tamper_detection() bool {
 			verify_ctx := create_context_with_cookies('${name}=${tampered_value}')
 			
 			// 验证应该失败
-			if _ := hono.get_signed_cookie(verify_ctx, name, secret) {
+			if _ := hono_middleware.get_signed_cookie(verify_ctx, name, secret) {
 				println('  Iteration ${i}: Tampered cookie was accepted (should have been rejected)')
 				return false
 			}

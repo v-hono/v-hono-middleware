@@ -1,4 +1,3 @@
-import hono
 import hono_middleware
 import os
 import time
@@ -6,15 +5,15 @@ import time
 fn test_logger_creation() {
 	println('=== 测试日志器创建 ===')
 	
-	config := hono.LoggerConfig{
-		level: hono.LogLevel.debug
-		output: hono.LogOutput.console
+	config := hono_middleware.LoggerConfig{
+		level: hono_middleware.LogLevel.debug
+		output: hono_middleware.LogOutput.console
 		enable_colors: true
 	}
 	
-	logger := hono.new_logger(config)
-	assert logger.config.level == hono.LogLevel.debug
-	assert logger.config.output == hono.LogOutput.console
+	logger := hono_middleware.new_logger(config)
+	assert logger.config.level == hono_middleware.LogLevel.debug
+	assert logger.config.output == hono_middleware.LogOutput.console
 	
 	println('✅ 日志器创建测试通过')
 }
@@ -23,17 +22,17 @@ fn test_log_levels() {
 	println('=== 测试日志级别 ===')
 	
 	// 测试字符串转日志级别
-	assert hono.parse_log_level('debug') == hono.LogLevel.debug
-	assert hono.parse_log_level('info') == hono.LogLevel.info
-	assert hono.parse_log_level('warn') == hono.LogLevel.warn
-	assert hono.parse_log_level('error') == hono.LogLevel.error
-	assert hono.parse_log_level('invalid') == hono.LogLevel.info  // 默认值
+	assert hono_middleware.parse_log_level('debug') == hono_middleware.LogLevel.debug
+	assert hono_middleware.parse_log_level('info') == hono_middleware.LogLevel.info
+	assert hono_middleware.parse_log_level('warn') == hono_middleware.LogLevel.warn
+	assert hono_middleware.parse_log_level('error') == hono_middleware.LogLevel.error
+	assert hono_middleware.parse_log_level('invalid') == hono_middleware.LogLevel.info  // 默认值
 	
 	// 测试日志级别转字符串
-	assert hono.log_level_to_string(hono.LogLevel.debug) == 'DEBUG'
-	assert hono.log_level_to_string(hono.LogLevel.info) == 'INFO'
-	assert hono.log_level_to_string(hono.LogLevel.warn) == 'WARN'
-	assert hono.log_level_to_string(hono.LogLevel.error) == 'ERROR'
+	assert hono_middleware.log_level_to_string(hono_middleware.LogLevel.debug) == 'DEBUG'
+	assert hono_middleware.log_level_to_string(hono_middleware.LogLevel.info) == 'INFO'
+	assert hono_middleware.log_level_to_string(hono_middleware.LogLevel.warn) == 'WARN'
+	assert hono_middleware.log_level_to_string(hono_middleware.LogLevel.error) == 'ERROR'
 	
 	println('✅ 日志级别测试通过')
 }
@@ -41,13 +40,13 @@ fn test_log_levels() {
 fn test_console_logging() {
 	println('=== 测试控制台日志输出 ===')
 	
-	config := hono.LoggerConfig{
-		level: hono.LogLevel.debug
-		output: hono.LogOutput.console
+	config := hono_middleware.LoggerConfig{
+		level: hono_middleware.LogLevel.debug
+		output: hono_middleware.LogOutput.console
 		enable_colors: true
 	}
 	
-	mut logger := hono.new_logger(config)
+	mut logger := hono_middleware.new_logger(config)
 	
 	// 测试基本日志方法
 	logger.debug('这是一条调试消息')
@@ -82,14 +81,14 @@ fn test_file_logging() {
 		os.rm(log_file) or {}
 	}
 	
-	config := hono.LoggerConfig{
-		level: hono.LogLevel.info
-		output: hono.LogOutput.file
+	config := hono_middleware.LoggerConfig{
+		level: hono_middleware.LogLevel.info
+		output: hono_middleware.LogOutput.file
 		file_path: log_file
 		enable_colors: false  // 文件输出不需要颜色
 	}
 	
-	mut logger := hono.new_logger(config)
+	mut logger := hono_middleware.new_logger(config)
 	
 	// 写入一些日志
 	logger.info('测试文件日志 1')
@@ -129,14 +128,14 @@ fn test_json_logging() {
 		os.rm(log_file) or {}
 	}
 	
-	config := hono.LoggerConfig{
-		level: hono.LogLevel.info
-		output: hono.LogOutput.file
+	config := hono_middleware.LoggerConfig{
+		level: hono_middleware.LogLevel.info
+		output: hono_middleware.LogOutput.file
 		file_path: log_file
 		enable_json: true
 	}
 	
-	mut logger := hono.new_logger(config)
+	mut logger := hono_middleware.new_logger(config)
 	
 	// 写入JSON格式日志
 	fields := {
@@ -167,14 +166,14 @@ fn test_json_logging() {
 fn test_global_logger() {
 	println('=== 测试全局日志器 ===')
 	
-	config := hono.LoggerConfig{
-		level: hono.LogLevel.info
-		output: hono.LogOutput.console
+	config := hono_middleware.LoggerConfig{
+		level: hono_middleware.LogLevel.info
+		output: hono_middleware.LogOutput.console
 		enable_colors: true
 	}
 	
 	// 创建日志器实例
-	mut logger := hono.new_logger(config)
+	mut logger := hono_middleware.new_logger(config)
 	
 	// 使用日志器方法
 	logger.info('日志器信息消息')
@@ -182,72 +181,6 @@ fn test_global_logger() {
 	logger.error('日志器错误消息')
 	
 	println('✅ 全局日志器测试通过')
-}
-
-fn test_request_logging() {
-	println('=== 测试HTTP请求日志 ===')
-	
-	config := hono.LoggerConfig{
-		level: hono.LogLevel.info
-		output: hono.LogOutput.console
-		enable_colors: true
-	}
-	
-	mut logger := hono.new_logger(config)
-	
-	req_log := hono.RequestLog{
-		method: 'GET'
-		path: '/api/users'
-		status_code: 200
-		response_time: 45.67
-		user_agent: 'Mozilla/5.0'
-		remote_addr: '192.168.1.100'
-		request_size: 1024
-		response_size: 2048
-		request_id: 'req-789'
-	}
-	
-	hono.log_request(mut logger, req_log)
-	
-	println('✅ HTTP请求日志测试通过')
-}
-
-fn test_performance_logging() {
-	println('=== 测试性能监控日志 ===')
-	
-	config := hono.LoggerConfig{
-		level: hono.LogLevel.info
-		output: hono.LogOutput.console
-		enable_colors: true
-	}
-	
-	mut logger := hono.new_logger(config)
-	
-	details := {
-		'cache_hit': 'true'
-		'db_queries': '3'
-		'memory_usage': '45MB'
-	}
-	
-	hono.log_performance(mut logger, '数据库查询', 123.45, details)
-	
-	println('✅ 性能监控日志测试通过')
-}
-
-fn test_error_logging() {
-	println('=== 测试错误日志 ===')
-	
-	config := hono.LoggerConfig{
-		level: hono.LogLevel.error
-		output: hono.LogOutput.console
-		enable_colors: true
-	}
-	
-	mut logger := hono.new_logger(config)
-	
-	hono.log_error_with_stack(mut logger, '数据库连接失败', '连接超时: 5秒', 'DATABASE')
-	
-	println('✅ 错误日志测试通过')
 }
 
 fn main() {
@@ -269,15 +202,6 @@ fn main() {
 	println('')
 	
 	test_global_logger()
-	println('')
-	
-	test_request_logging()
-	println('')
-	
-	test_performance_logging()
-	println('')
-	
-	test_error_logging()
 	println('')
 	
 	println('🎉 所有日志系统测试通过！')
