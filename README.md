@@ -1,4 +1,4 @@
-# meiseayoung.hono_middleware
+# hono_middleware
 
 Middleware collection for v-hono-core framework.
 
@@ -14,8 +14,8 @@ Middleware collection for v-hono-core framework.
 ## Installation
 
 ```bash
-v install meiseayoung.hono
-v install meiseayoung.hono_middleware
+v install --git https://github.com/v-hono/v-hono-core
+v install --git https://github.com/v-hono/v-hono-middleware
 ```
 
 ## Usage
@@ -23,8 +23,8 @@ v install meiseayoung.hono_middleware
 ### CORS Middleware
 
 ```v
-import meiseayoung.hono
-import meiseayoung.hono_middleware
+import hono
+import hono_middleware
 
 fn main() {
     mut app := hono.Hono.new()
@@ -42,8 +42,8 @@ fn main() {
 ### Rate Limiting
 
 ```v
-import meiseayoung.hono
-import meiseayoung.hono_middleware
+import hono
+import hono_middleware
 
 fn main() {
     mut app := hono.Hono.new()
@@ -62,8 +62,8 @@ fn main() {
 ### Request Validation
 
 ```v
-import meiseayoung.hono
-import meiseayoung.hono_middleware
+import hono
+import hono_middleware
 
 fn main() {
     mut app := hono.Hono.new()
@@ -84,7 +84,7 @@ fn main() {
 
 ## Dependencies
 
-- `meiseayoung.hono` - Core framework
+- `hono` - Core framework
 
 ## License
 
